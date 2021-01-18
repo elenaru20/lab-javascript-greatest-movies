@@ -153,7 +153,7 @@ function bestYearAvg(moviesArr) {
 
 if(moviesArr.length === 0) {return null;}
 
-if(moviesArr.length === 1) {return moviesArr.rate;}
+if(moviesArr.length === 1) {return `The best year was ${moviesArr[0].year} with an average rate of ${moviesArr[0].rate}`;}
 
 const years = moviesArr.map(function(movie) {
     return movie.year;
@@ -185,10 +185,12 @@ matrix.push(averageRateInYear);
 }
 
 
+const maxAvgRate = Math.max(...matrix);
+const indexMaxRate = matrix.indexOf(maxAvgRate); //still need to add all max avg-rates if more than one year
 
-const indexMaxRate = matrix.indexOf(Math.max(...matrix)); //still need to add all max avg-rates if more than one year
-                              
-return Math.max(distinctYears[indexMaxRate]);
+
+return `The best year was ${Math.max(distinctYears[indexMaxRate])} with an average rate of ${maxAvgRate}`;
+
 
 }
 
