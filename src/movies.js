@@ -111,7 +111,7 @@ return sorted;
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 
 function turnHoursToMinutes(moviesArr) {
-  
+
     const movie = JSON.parse(JSON.stringify(moviesArr));
     
     const hour2Minute = movie.map(function (movie){      
@@ -143,36 +143,54 @@ function turnHoursToMinutes(moviesArr) {
 
 // BONUS - Iteration 8: Best yearly rate average - Best yearly rate average
 
-function bestYearAvg(moviesArr) {
-    const years = movies3.map(function(movie) {
-        return movie.year;
-      })
-      
-      const orderYears = years.sort(function(a,b) { 
-      return a-b;
-      })
-      
-      const distinct = orderYears.filter(function (value, index, arr) {
-        return arr.indexOf(value) === index;
-      })
-      
-      console.log(distinct)
-      
-      const moviesOrder = movies3.sort(function (a,b){
-        return a.year - b.year;
-      })
-      
-       let x = [];
-       for (let i=0; i<distinct.length; i++) {
-        for (let k = 0; k<movies3.length; k++) {
-          if (distinct[i] === movies3[k].year) {
-            x[i][i] = x.push(movies3[k]);
-          }
-        }
-      }
-      
-      console.log(x);
-      
 
-    return `The best year was ${year} with an average rate of ${rate}`;
+// matrix mit Jahr * filme je Jahr
+// Jahr: array of distinct years => length
+//for schleife, dann filter nach jahr & averages je jahr. index der rates wie dinstinctYears
+
+
+function bestYearAvg(moviesArr) {
+
+if(moviesArr.length === 0) {return null;}
+
+if(moviesArr.length === 1) {return moviesArr.rate;}
+
+const years = moviesArr.map(function(movie) {
+    return movie.year;
+  })
+
+const distinctYears = years.filter(function (value, index, arr) {
+    return arr.indexOf(value) === index;
+  })
+
+let matrix = [];
+
+for (let i = 0; i<distinctYears.length; i++) {
+
+let filterYear = moviesArr.filter(function (movie){
+    if (movie.year === distinctYears[i]) {
+      return true;
+    }
+})
+
+const numMoviesOfYear = filterYear.length;
+
+const sumOfRatesinYear = filterYear.reduce(function (total, movie) {
+return total + movie.rate;
+},0)
+
+const averageRateInYear = sumOfRatesinYear/numMoviesOfYear;
+
+matrix.push(averageRateInYear);
 }
+
+
+
+const indexMaxRate = matrix.indexOf(Math.max(...matrix)); //still need to add all max avg-rates if more than one year
+                              
+return Math.max(distinctYears[indexMaxRate]);
+
+}
+
+
+
